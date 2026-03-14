@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>Shweta's Shaadi 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rose:#D4607A;--rose-dark:#B5445E;--rose-light:#FCE8EE;
+  --peach:#F4A261;--blush:#F7C5C5;--blush2:#F9D8D0;
+  --gold:#C9952A;--green:#6B9E6B;--green-light:#E8F4E8;
+  --text:#3A2525;--text2:#6B4F4F;--text3:#9B7E7E;
+  --surface:#FFFFFF;--bg:#FDF0F0;
+  --border:rgba(180,100,100,0.13);--border2:rgba(180,100,100,0.25);
+  --shadow:0 2px 12px rgba(180,80,80,0.10);
+  --r:14px;--r-lg:20px;--r-xl:26px;--nav:64px;
+  --font-d:'Playfair Display',serif;--font-b:'Nunito',sans-serif;
+}
+html,body{min-height:100%;background:var(--bg);font-family:var(--font-b);color:var(--text);overflow-x:hidden}
+#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
+/* TOP BAR */
+.top-bar{background:linear-gradient(135deg,#F7C5C5 0%,#F4A261 55%,#E8C97A 100%);padding:14px 1rem 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;box-shadow:0 2px 12px rgba(180,80,80,0.15)}
+.top-bar::before{content:'♥ ✿ ♥ ✿ ♥ ✿ ♥';position:absolute;top:4px;left:0;right:0;text-align:center;font-size:9px;color:rgba(255,255,255,0.45);letter-spacing:5px;pointer-events:none}
+.tb-title{flex:1;text-align:center}
+.tb-title h1{font-family:var(--font-d);font-size:1.35rem;font-weight:700;color:#fff;text-shadow:0 1px 6px rgba(180,60,60,0.22);line-height:1}
+.tb-title h1 em{font-style:italic;font-weight:500}
+.tb-title p{font-size:9px;color:rgba(255,255,255,0.85);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+.ib{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.28);border:none;cursor:pointer;font-size:15px;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+/* SYNC BADGE */
+.sync-bar{display:flex;align-items:center;justify-content:space-between;background:rgba(107,158,107,0.1);border:0.5px solid rgba(107,158,107,0.3);border-radius:10px;padding:8px 12px;margin-bottom:12px;font-size:12px;font-weight:600;color:var(--green)}
+.sync-bar.syncing{background:rgba(196,149,42,0.1);border-color:rgba(196,149,42,0.3);color:var(--gold)}
+.sync-bar.error{background:rgba(212,96,122,0.1);border-color:rgba(212,96,122,0.3);color:var(--rose)}
+.sdot{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block;margin-right:6px;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+/* SPINNER */
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* PAGES */
+.pages{flex:1}
+.page{display:none;padding:12px 12px calc(var(--nav)+16px)}
+.page.active{display:block}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:var(--nav);background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:20;box-shadow:0 -3px 16px rgba(180,80,80,0.09)}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:transparent;cursor:pointer;font-family:var(--font-b);padding:6px 2px}
+.ni-icon{font-size:19px;line-height:1}
+.ni-label{font-size:10px;color:var(--text3);font-weight:700}
+.ni.active .ni-label{color:var(--rose)}
+.ni-bar{width:18px;height:3px;border-radius:2px;background:transparent;margin-top:1px}
+.ni.active .ni-bar{background:var(--rose)}
+/* CARDS */
+.card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow);border:0.5px solid var(--border);overflow:hidden;margin-bottom:12px}
+.cp{padding:14px}
+.sec{font-family:var(--font-d);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
+/* STAT GRID */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sc{border-radius:var(--r);padding:13px;box-shadow:var(--shadow)}
+.sc.p{background:linear-gradient(135deg,#FCE8EE,#F9D0D8)}
+.sc.o{background:linear-gradient(135deg,#FDE8D8,#F9D0C0)}
+.sc.g{background:linear-gradient(135deg,#F5E6C3,#F0D8A0)}
+.sc.gr{background:linear-gradient(135deg,#E8F4E8,#D0EAD0)}
+.sc-icon{font-size:1.3rem;margin-bottom:5px}
+.sc-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:2px}
+.sc-val{font-family:var(--font-d);font-size:1.3rem;font-weight:700;color:var(--text);line-height:1}
+.sc-sub{font-size:10px;color:var(--text3);margin-top:2px}
+/* CHARTS */
+.chart-wrap{height:170px;display:flex;align-items:center;justify-content:center}
+.legend-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin-top:8px}
+.li{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2)}
+.ld{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+/* EXPENSE ITEMS */
+.ei{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-bottom:.5px solid var(--border);cursor:pointer;background:transparent;width:100%;border-left:none;border-right:none;border-top:none;font-family:var(--font-b);text-align:left}
+.ei:last-child{border-bottom:none}
+.ei:active{background:#FEF2F2}
+.ei-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ei-body{flex:1;min-width:0}
+.ei-name{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ei-meta{font-size:11px;color:var(--text3);margin-top:1px}
+.ei-right{text-align:right;flex-shrink:0}
+.ei-amt{font-family:var(--font-d);font-size:.95rem;font-weight:700;color:var(--rose)}
+.wb{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:700}
+.w-papa{background:#E8F0FF;color:#3355CC}
+.w-mummy{background:#FFE8F0;color:#CC3366}
+.w-didi{background:#E8FFE8;color:#336633}
+.w-shweta{background:#FFF0E8;color:#CC6600}
+/* FORMS */
+.fl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:5px;display:block}
+.fi{width:100%;border:1.5px solid var(--border2);border-radius:var(--r);background:var(--surface);font-family:var(--font-b);font-size:15px;color:var(--text);padding:11px 13px;outline:none;-webkit-appearance:none;appearance:none}
+.fi:focus{border-color:var(--rose)}
+.fi::placeholder{color:var(--text3)}
+select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239B7E7E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+textarea.fi{resize:vertical;min-height:70px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fs{margin-bottom:14px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mb{padding:11px 8px;border:1.5px solid var(--border2);border-radius:var(--r);background:var(--surface);font-family:var(--font-b);font-size:13px;font-weight:700;cursor:pointer;text-align:center;transition:all .18s}
+.mb.sel-papa{background:#E8F0FF;border-color:#3355CC;color:#3355CC}
+.mb.sel-mummy{background:#FFE8F0;border-color:#CC3366;color:#CC3366}
+.mb.sel-didi{background:#E8FFE8;border-color:#336633;color:#336633}
+.mb.sel-shweta{background:#FFF0E8;border-color:#CC6600;color:#CC6600}
+.ptgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pt{padding:9px 6px;border:1.5px solid var(--border2);border-radius:10px;background:var(--surface);font-family:var(--font-b);font-size:11px;font-weight:700;cursor:pointer;text-align:center;color:var(--text2)}
+.pt.active{background:var(--rose-light);border-color:var(--rose);color:var(--rose)}
+/* BUTTONS */
+.btn{font-family:var(--font-b);font-size:14px;font-weight:700;border:none;border-radius:var(--r);padding:13px 18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;width:100%}
+.btn:active{opacity:.8}
+.btn-p{background:linear-gradient(135deg,var(--rose),var(--peach));color:#fff;box-shadow:0 4px 14px rgba(212,96,122,.28)}
+.btn-o{background:transparent;border:1.5px solid var(--border2);color:var(--text2)}
+.btn-d{background:var(--rose-light);color:var(--rose);border:1px solid rgba(212,96,122,.2)}
+.bsm{font-size:12px;padding:8px 14px;width:auto;border-radius:10px}
+/* FILTER CHIPS */
+.fchips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:none}
+.fchips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:6px 13px;border-radius:20px;border:1.5px solid var(--border2);background:var(--surface);font-family:var(--font-b);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;white-space:nowrap}
+.chip.active{background:var(--rose-light);border-color:var(--rose);color:var(--rose)}
+/* SEARCH */
+.sbar{position:relative;margin-bottom:12px}
+.sbar input{width:100%;border:1.5px solid var(--border2);border-radius:var(--r);background:var(--surface);font-family:var(--font-b);font-size:14px;color:var(--text);padding:10px 12px 10px 36px;outline:none}
+.sbar input:focus{border-color:var(--rose)}
+.sbar::before{content:'🔍';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(44,20,20,.48);z-index:50;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.mo.open{opacity:1;pointer-events:all}
+.ms{background:var(--surface);border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding:0 14px 36px;-webkit-overflow-scrolling:touch}
+.mo.open .ms{transform:translateY(0)}
+.mh{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:10px auto 14px}
+.mt{font-family:var(--font-d);font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:14px;text-align:center}
+/* VENDOR */
+.vc{border-radius:var(--r);padding:13px;border:.5px solid var(--border);background:var(--surface);box-shadow:var(--shadow);cursor:pointer;margin-bottom:10px;display:block;width:100%;text-align:left;font-family:var(--font-b)}
+.vn{font-size:14px;font-weight:700;color:var(--text)}
+.vcat{font-size:11px;color:var(--text3);margin-top:1px}
+.vstats{display:flex;gap:16px;margin-top:8px}
+.vs-val{font-family:var(--font-d);font-size:.95rem;font-weight:700;color:var(--rose)}
+.vs-lbl{font-size:10px;color:var(--text3)}
+/* TASK */
+.ti{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-bottom:.5px solid var(--border);cursor:pointer;background:transparent;width:100%;border-left:none;border-right:none;border-top:none;font-family:var(--font-b);text-align:left}
+.ti:last-child{border-bottom:none}
+.tck{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:12px}
+.tck.done{background:var(--green);border-color:var(--green);color:#fff}
+.tb2{flex:1}
+.tt{font-size:14px;font-weight:700;color:var(--text)}
+.tt.done{text-decoration:line-through;color:var(--text3)}
+.tdesc{font-size:11px;color:var(--text3);margin-top:1px}
+.tdue{font-size:10px;color:var(--peach);font-weight:700;margin-top:3px}
+.tdue.ov{color:var(--rose)}
+/* TIMELINE */
+.tl{padding-left:14px;border-left:2px solid var(--blush)}
+.tli{position:relative;padding:0 0 12px 16px}
+.tli::before{content:'💰';position:absolute;left:-10px;top:0;font-size:12px}
+.tl-d{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase}
+.tl-t{font-size:13px;font-weight:700;color:var(--text);margin-top:1px}
+.tl-s{font-size:11px;color:var(--text3);margin-top:1px}
+/* DETAIL */
+.dh{background:linear-gradient(135deg,var(--blush),var(--blush2));border-radius:var(--r-lg);padding:16px;margin-bottom:12px;text-align:center}
+.dh-name{font-family:var(--font-d);font-size:1.2rem;font-weight:700}
+.dh-amt{font-family:var(--font-d);font-size:1.9rem;font-weight:700;color:var(--rose);margin-top:4px}
+.bb{height:7px;background:rgba(255,255,255,.5);border-radius:4px;overflow:hidden;margin-top:6px}
+.bf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--rose),var(--peach))}
+/* EMPTY */
+.empty{text-align:center;padding:2rem 1rem;color:var(--text3)}
+.empty-e{font-size:2.5rem;margin-bottom:8px}
+.empty-t{font-family:var(--font-d);font-size:.95rem;font-style:italic}
+/* MISC */
+.back{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--rose);font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:10px;background:none;border:none;font-family:var(--font-b)}
+.rd{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:.5px solid var(--border);font-size:13px}
+.rd:last-child{border-bottom:none}
+.rd-k{color:var(--text3);font-weight:700;flex-shrink:0;margin-right:10px}
+.rd-v{color:var(--text);text-align:right;word-break:break-word}
+/* TOAST */
+#toast{position:fixed;bottom:calc(var(--nav)+14px);left:50%;transform:translateX(-50%) translateY(14px);background:#2D1B1B;color:#fff;font-family:var(--font-b);font-size:13px;font-weight:600;padding:10px 20px;border-radius:30px;box-shadow:0 4px 20px rgba(0,0,0,.25);z-index:999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* SPINNER */
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loading" style="position:fixed;inset:0;background:linear-gradient(135deg,#F7C5C5,#F4A261,#E8C97A);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:12px">
+  <div style="font-size:3rem">💕</div>
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;text-shadow:0 2px 8px rgba(180,60,60,0.3)">Shweta's Shaadi</h2>
+  <div class="spinner"></div>
+  <p id="loadMsg" style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:600">Loading your wedding planner…</p>
+</div>
+
+<div id="app" style="display:none">
+  <div class="top-bar">
+    <button class="ib" onclick="syncNow()" title="Sync / Refresh">🔄</button>
+    <div class="tb-title">
+      <p>💕 Shweta's Shaadi 💕</p>
+      <h1>Wedding <em>Planner</em></h1>
+    </div>
+    <button class="ib" onclick="openAddExp()">＋</button>
+  </div>
+
+  <div class="pages">
+    <!-- DASHBOARD -->
+    <div class="page active" id="pg-dash">
+      <div class="sync-bar" id="syncBar">
+        <span><span class="sdot"></span><span id="syncMsg">Live — changes save instantly</span></span>
+        <button class="btn btn-o bsm" onclick="syncNow()" style="font-size:11px;padding:5px 10px">🔄 Refresh</button>
+      </div>
+      <div class="sgrid">
+        <div class="sc p"><div class="sc-icon">💸</div><div class="sc-lbl">Total Expenses</div><div class="sc-val" id="d-total">₹0</div><div class="sc-sub" id="d-cnt">0 items</div></div>
+        <div class="sc o"><div class="sc-icon">🏦</div><div class="sc-lbl">Amount Paid</div><div class="sc-val" id="d-paid">₹0</div><div class="sc-sub" id="d-due">₹0 pending</div></div>
+        <div class="sc g"><div class="sc-icon">🎊</div><div class="sc-lbl">Categories</div><div class="sc-val" id="d-cats">0</div><div class="sc-sub">active</div></div>
+        <div class="sc gr"><div class="sc-icon">✅</div><div class="sc-lbl">Tasks Done</div><div class="sc-val" id="d-tasks">0/0</div><div class="sc-sub">completed</div></div>
+      </div>
+      <div class="card cp">
+        <div class="sec">💰 By Category</div>
+        <div class="chart-wrap"><canvas id="cChart"></canvas></div>
+        <div class="legend-grid" id="cLeg"></div>
+      </div>
+      <div class="card cp">
+        <div class="sec">👨‍👩‍👧‍👧 By Family Member</div>
+        <div class="chart-wrap"><canvas id="mChart"></canvas></div>
+        <div class="legend-grid" id="mLeg"></div>
+      </div>
+      <div class="card"><div class="cp" style="padding-bottom:4px"><div class="sec">🌸 Recent Expenses</div></div><div id="d-recent"></div></div>
+      <div class="card"><div class="cp" style="padding-bottom:4px"><div class="sec">📋 Upcoming Tasks</div></div><div id="d-upcoming"></div></div>
+    </div>
+
+    <!-- EXPENSES -->
+    <div class="page" id="pg-exp">
+      <div id="exp-detail" style="display:none"></div>
+      <div id="exp-list">
+        <div class="sbar"><input id="expQ" placeholder="Search expenses or vendors…" oninput="renderExpList()"/></div>
+        <div class="fchips" id="expChips"></div>
+        <div class="card" id="expCards"></div>
+      </div>
+    </div>
+
+    <!-- VENDORS -->
+    <div class="page" id="pg-vend">
+      <div id="vend-detail" style="display:none"></div>
+      <div id="vend-list">
+        <button class="btn btn-o" style="margin-bottom:12px" onclick="openAddVendor()">＋ Add Vendor</button>
+        <div id="vendCards"></div>
+      </div>
+    </div>
+
+    <!-- TASKS -->
+    <div class="page" id="pg-tasks">
+      <button class="btn btn-p" style="margin-bottom:12px" onclick="openAddTask()">＋ Add Task</button>
+      <div class="fchips">
+        <button class="chip active" onclick="setTF('all',this)">All</button>
+        <button class="chip" onclick="setTF('pending',this)">Pending</button>
+        <button class="chip" onclick="setTF('done',this)">Done</button>
+      </div>
+      <div class="card" id="taskCards"></div>
+    </div>
+  </div>
+
+  <nav class="bnav">
+    <button class="ni active" onclick="nav('dash',this)"><div class="ni-icon">🏠</div><div class="ni-label">Dashboard</div><div class="ni-bar"></div></button>
+    <button class="ni" onclick="nav('exp',this)"><div class="ni-icon">💰</div><div class="ni-label">Expenses</div><div class="ni-bar"></div></button>
+    <button class="ni" onclick="nav('vend',this)"><div class="ni-icon">🏪</div><div class="ni-label">Vendors</div><div class="ni-bar"></div></button>
+    <button class="ni" onclick="nav('tasks',this)"><div class="ni-icon">📋</div><div class="ni-label">Tasks</div><div class="ni-bar"></div></button>
+  </nav>
+</div>
+
+<div id="toast"></div>
+
+<!-- MODALS -->
+<!-- ADD EXPENSE -->
+<div class="mo" id="mo-exp">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt" id="mo-exp-title">✨ Add Expense</div>
+    <div class="fs"><label class="fl">Expense Name *</label><input class="fi" id="f-name" placeholder="e.g. Bridal Lehenga, DJ Booking…"/></div>
+    <div class="frow">
+      <div class="fs"><label class="fl">Category *</label><select class="fi" id="f-cat" onchange="catChg()"></select></div>
+      <div class="fs"><label class="fl">Subcategory</label><input class="fi" id="f-sub" placeholder="Optional"/></div>
+    </div>
+    <div class="fs"><label class="fl">Vendor</label><select class="fi" id="f-vend"><option value="">None</option></select></div>
+    <div class="frow">
+      <div class="fs"><label class="fl">Total Amount (₹) *</label><input class="fi" id="f-total" type="number" min="0" placeholder="0" inputmode="numeric"/></div>
+      <div class="fs"><label class="fl">Paying Now (₹) *</label><input class="fi" id="f-pay" type="number" min="0" placeholder="0" inputmode="numeric"/></div>
+    </div>
+    <div class="fs"><label class="fl">Payment Type *</label>
+      <div class="ptgrid">
+        <button class="pt active" data-v="Advance" onclick="selPT(this,'exp')">Advance</button>
+        <button class="pt" data-v="Balance" onclick="selPT(this,'exp')">Balance</button>
+        <button class="pt" data-v="Full" onclick="selPT(this,'exp')">Full Payment</button>
+        <button class="pt" data-v="Partial" onclick="selPT(this,'exp')">Partial</button>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fs"><label class="fl">Payment Date *</label><input class="fi" id="f-pdate" type="date"/></div>
+      <div class="fs"><label class="fl">Expense Date</label><input class="fi" id="f-edate" type="date"/></div>
+    </div>
+    <div class="fs"><label class="fl">Paid By *</label>
+      <div class="mgrid">
+        <button class="mb" data-m="Papa" onclick="selMem(this,'exp')">👴 Papa</button>
+        <button class="mb" data-m="Mummy" onclick="selMem(this,'exp')">👩 Mummy</button>
+        <button class="mb" data-m="Didi" onclick="selMem(this,'exp')">👧 Didi</button>
+        <button class="mb" data-m="Shweta" onclick="selMem(this,'exp')">👰 Shweta</button>
+      </div>
+    </div>
+    <div class="fs"><label class="fl">Notes</label><textarea class="fi" id="f-notes" placeholder="Any notes…"></textarea></div>
+    <button class="btn btn-p" onclick="saveExp()">💾 Save Expense</button>
+    <button class="btn btn-o" style="margin-top:8px" onclick="closeM('mo-exp')">Cancel</button>
+  </div>
+</div>
+<!-- ADD PAYMENT -->
+<div class="mo" id="mo-pay">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">➕ Add Payment</div>
+    <input type="hidden" id="pay-eid"/>
+    <div class="frow">
+      <div class="fs"><label class="fl">Amount (₹) *</label><input class="fi" id="pay-amt" type="number" min="0" placeholder="0" inputmode="numeric"/></div>
+      <div class="fs"><label class="fl">Date *</label><input class="fi" id="pay-date" type="date"/></div>
+    </div>
+    <div class="fs"><label class="fl">Payment Type *</label>
+      <div class="ptgrid">
+        <button class="pt active" data-v="Advance" onclick="selPT(this,'pay')">Advance</button>
+        <button class="pt" data-v="Balance" onclick="selPT(this,'pay')">Balance</button>
+        <button class="pt" data-v="Full" onclick="selPT(this,'pay')">Full Payment</button>
+        <button class="pt" data-v="Partial" onclick="selPT(this,'pay')">Partial</button>
+      </div>
+    </div>
+    <div class="fs"><label class="fl">Paid By *</label>
+      <div class="mgrid">
+        <button class="mb" data-m="Papa" onclick="selMem(this,'pay')">👴 Papa</button>
+        <button class="mb" data-m="Mummy" onclick="selMem(this,'pay')">👩 Mummy</button>
+        <button class="mb" data-m="Didi" onclick="selMem(this,'pay')">👧 Didi</button>
+        <button class="mb" data-m="Shweta" onclick="selMem(this,'pay')">👰 Shweta</button>
+      </div>
+    </div>
+    <div class="fs"><label class="fl">Notes</label><input class="fi" id="pay-note" placeholder="Optional"/></div>
+    <button class="btn btn-p" onclick="savePayment()">💾 Save Payment</button>
+    <button class="btn btn-o" style="margin-top:8px" onclick="closeM('mo-pay')">Cancel</button>
+  </div>
+</div>
+<!-- ADD VENDOR -->
+<div class="mo" id="mo-vend">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">🏪 Add Vendor</div>
+    <div class="fs"><label class="fl">Vendor Name *</label><input class="fi" id="v-name" placeholder="e.g. Ravi Photography"/></div>
+    <div class="frow">
+      <div class="fs"><label class="fl">Category</label><select class="fi" id="v-cat"></select></div>
+      <div class="fs"><label class="fl">Phone</label><input class="fi" id="v-phone" type="tel" placeholder="Phone number"/></div>
+    </div>
+    <div class="fs"><label class="fl">Notes</label><textarea class="fi" id="v-notes" placeholder="Any notes…"></textarea></div>
+    <button class="btn btn-p" onclick="saveVendor()">💾 Save Vendor</button>
+    <button class="btn btn-o" style="margin-top:8px" onclick="closeM('mo-vend')">Cancel</button>
+  </div>
+</div>
+<!-- ADD TASK -->
+<div class="mo" id="mo-task">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">📋 Add Task</div>
+    <div class="fs"><label class="fl">Task Title *</label><input class="fi" id="t-title" placeholder="e.g. Book Makeup Artist"/></div>
+    <div class="fs"><label class="fl">Description</label><textarea class="fi" id="t-desc" placeholder="Details…"></textarea></div>
+    <div class="fs"><label class="fl">Due Date</label><input class="fi" id="t-due" type="date"/></div>
+    <button class="btn btn-p" onclick="saveTask()">💾 Save Task</button>
+    <button class="btn btn-o" style="margin-top:8px" onclick="closeM('mo-task')">Cancel</button>
+  </div>
+</div>
+<!-- NEW CATEGORY -->
+<div class="mo" id="mo-cat">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">🏷️ New Category</div>
+    <div class="fs"><label class="fl">Name *</label><input class="fi" id="nc-name" placeholder="e.g. Baraat"/></div>
+    <div class="fs"><label class="fl">Emoji</label><input class="fi" id="nc-emoji" placeholder="💃"/></div>
+    <button class="btn btn-p" onclick="saveNewCat()">Add Category</button>
+    <button class="btn btn-o" style="margin-top:8px" onclick="closeM('mo-cat')">Cancel</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ── JSONBIN CONFIG ──
+var BIN_ID = '69b590bdaa77b81da9e478b6';
+var API_KEY = '$2a$10$.qsF3V48eZihUQTWh7Cyu.ciREfUgmle.ZBbEL.DmNBFYCgQ5C5ue';
+var API_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+
+// ── DEFAULT CATEGORIES ──
+var DEFAULT_CATS = [
+  {id:'venue',name:'Venue',e:'🏛️'},{id:'catering',name:'Catering',e:'🍽️'},
+  {id:'decorations',name:'Decorations',e:'🌸'},{id:'clothing',name:'Clothing',e:'👗'},
+  {id:'jewelry',name:'Jewelry',e:'💍'},{id:'photo',name:'Photography & Video',e:'📸'},
+  {id:'invitations',name:'Invitations',e:'📮'},{id:'makeup',name:'Makeup & Grooming',e:'💄'},
+  {id:'transport',name:'Transportation',e:'🚗'},{id:'accommodation',name:'Accommodation',e:'🏨'},
+  {id:'music',name:'Music / DJ',e:'🎵'},{id:'pandit',name:'Pandit / Rituals',e:'🪔'},
+  {id:'gifts',name:'Return Gifts',e:'🎁'},{id:'misc',name:'Miscellaneous',e:'📦'}
+];
+
+// ── IN-MEMORY DATA ──
+var DATA = {expenses:[],vendors:[],tasks:[],categories:JSON.parse(JSON.stringify(DEFAULT_CATS))};
+
+// ── UTILS ──
+var uid = function(){return Date.now()+'_'+Math.random().toString(36).slice(2,6);};
+var fmt = function(n){return '₹'+Math.round(n||0).toLocaleString('en-IN');};
+var today = function(){return new Date().toISOString().split('T')[0];};
+var getCat = function(id){return DATA.categories.find(function(c){return c.id===id;})||{name:id,e:'📦'};};
+var getVend = function(id){return DATA.vendors.find(function(v){return v.id===id;});};
+var catPaid = function(e){return e.pays.reduce(function(s,p){return s+(p.amt||0);},0);};
+var catBal = function(e){return Math.max(0,(e.total||0)-catPaid(e));};
+var CAT_COLS = ['#F7C5C5','#F4A261','#C9952A','#6B9E6B','#A78BFA','#60A5FA','#F472B6','#34D399','#FB923C','#818CF8','#F87171','#4ADE80','#FACC15','#38BDF8'];
+var MEM_COL = {Papa:'#3355CC',Mummy:'#CC3366',Didi:'#336633',Shweta:'#CC6600'};
+var MEM_BG = {Papa:'#E8F0FF',Mummy:'#FFE8F0',Didi:'#E8FFE8',Shweta:'#FFF0E8'};
+
+function fmtDate(d){
+  if(!d)return '';
+  try{return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
+  catch(e){return d;}
+}
+
+// ── TOAST ──
+var toastT;
+function toast(msg){
+  var el=document.getElementById('toast');
+  el.textContent=msg;
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(function(){el.classList.remove('show');},3000);
+}
+
+// ── SYNC STATUS ──
+function setSyncStatus(state, msg){
+  var bar = document.getElementById('syncBar');
+  var txt = document.getElementById('syncMsg');
+  bar.className = 'sync-bar' + (state==='syncing'?' syncing':state==='error'?' error':'');
+  txt.textContent = msg;
+}
+
+// ── LOCAL CACHE (backup so data never shows 0) ──
+var CACHE_KEY = 'shaadi_cache_v1';
+function saveCache(){
+  try{localStorage.setItem(CACHE_KEY,JSON.stringify({expenses:DATA.expenses,vendors:DATA.vendors,tasks:DATA.tasks,categories:DATA.categories}));}catch(e){}
+}
+function loadCache(){
+  try{
+    var raw=localStorage.getItem(CACHE_KEY);
+    if(raw){
+      var c=JSON.parse(raw);
+      DATA.expenses=c.expenses||[];
+      DATA.vendors=c.vendors||[];
+      DATA.tasks=c.tasks||[];
+      DATA.categories=(c.categories&&c.categories.length)?c.categories:JSON.parse(JSON.stringify(DEFAULT_CATS));
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+// ── JSONBIN: LOAD DATA ──
+function loadFromCloud(cb){
+  setSyncStatus('syncing','Loading data…');
+  // Show cached data instantly so nothing looks empty
+  var hadCache = loadCache();
+  if(hadCache){
+    renderDash(); renderExpChips(); renderExpList(); renderVendors(); renderTasks();
+    setSyncStatus('syncing','Syncing latest data…');
+  }
+  fetch(API_URL+'/latest', {
+    headers: {'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false'}
+  })
+  .then(function(r){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  })
+  .then(function(json){
+    if(json && typeof json === 'object' && !json.message){
+      DATA.expenses = json.expenses || [];
+      DATA.vendors = json.vendors || [];
+      DATA.tasks = json.tasks || [];
+      DATA.categories = (json.categories && json.categories.length) ? json.categories : JSON.parse(JSON.stringify(DEFAULT_CATS));
+      saveCache(); // update cache with latest
+    }
+    setSyncStatus('ok','Live — changes save instantly ✓');
+    if(cb) cb();
+  })
+  .catch(function(){
+    if(hadCache){
+      setSyncStatus('ok','Showing saved data (offline)');
+    } else {
+      setSyncStatus('error','No internet — please reconnect');
+      toast('⚠️ No internet. Showing last saved data.');
+    }
+    if(cb) cb();
+  });
+}
+
+// ── JSONBIN: SAVE DATA ──
+var saveTimer;
+function saveToCloud(msg){
+  clearTimeout(saveTimer);
+  setSyncStatus('syncing','Saving…');
+  saveCache(); // save to cache immediately
+  saveTimer = setTimeout(function(){
+    fetch(API_URL, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json','X-Master-Key':API_KEY},
+      body: JSON.stringify({
+        expenses: DATA.expenses,
+        vendors: DATA.vendors,
+        tasks: DATA.tasks,
+        categories: DATA.categories
+      })
+    })
+    .then(function(r){
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    })
+    .then(function(){
+      saveCache();
+      setSyncStatus('ok','Saved ✓ — all family can see this');
+      if(msg) toast(msg);
+    })
+    .catch(function(){
+      setSyncStatus('error','Cloud save failed — data kept locally');
+      toast('⚠️ Cloud save failed. Data saved on this device.');
+    });
+  }, 600);
+}
+
+function syncNow(){
+  setSyncStatus('syncing','Refreshing…');
+  loadFromCloud(function(){
+    renderDash();
+    renderExpChips();
+    renderExpList();
+    renderVendors();
+    renderTasks();
+    toast('🔄 Refreshed!');
+  });
+}
+
+// ── NAV ──
+var curPage = 'dash';
+function nav(p, btn){
+  document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active');});
+  document.getElementById('pg-'+p).classList.add('active');
+  document.querySelectorAll('.ni').forEach(function(x){x.classList.remove('active');});
+  btn.classList.add('active');
+  curPage = p;
+  if(p==='dash') renderDash();
+  if(p==='exp'){renderExpChips();renderExpList();}
+  if(p==='vend') renderVendors();
+  if(p==='tasks') renderTasks();
+}
+
+// ── MODALS ──
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.mo').forEach(function(m){
+  m.addEventListener('click',function(e){if(e.target===this)closeM(this.id);});
+});
+
+// ── FORM STATE ──
+var curPT = {exp:'Advance', pay:'Advance'};
+var curMem = {exp:null, pay:null};
+var editExpId = null, tfilt = 'all', expCatFilt = 'All';
+
+function selPT(btn, ctx){
+  var scope = ctx==='pay' ? '#mo-pay .pt' : '#mo-exp .pt';
+  document.querySelectorAll(scope).forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  curPT[ctx] = btn.dataset.v;
+}
+function selMem(btn, ctx){
+  var scope = ctx==='pay' ? '#mo-pay .mb' : '#mo-exp .mb';
+  document.querySelectorAll(scope).forEach(function(b){b.className='mb';});
+  var m = btn.dataset.m;
+  btn.className = 'mb sel-'+m.toLowerCase();
+  curMem[ctx] = m;
+}
+function catChg(){
+  if(document.getElementById('f-cat').value==='__new__'){
+    openM('mo-cat');
+    document.getElementById('f-cat').value = DATA.categories[0].id;
+  }
+}
+function fillCatSel(id){
+  var s = document.getElementById(id);
+  s.innerHTML = DATA.categories.map(function(c){return '<option value="'+c.id+'">'+c.e+' '+c.name+'</option>';}).join('');
+  if(id==='f-cat') s.innerHTML += '<option value="__new__">＋ New Category…</option>';
+}
+function fillVendSel(){
+  var s = document.getElementById('f-vend');
+  s.innerHTML = '<option value="">None</option>'+DATA.vendors.map(function(v){return '<option value="'+v.id+'">'+v.name+'</option>';}).join('');
+}
+
+// ── ADD EXPENSE ──
+function openAddExp(id){
+  editExpId = id||null;
+  fillCatSel('f-cat'); fillVendSel();
+  document.getElementById('mo-exp-title').textContent = id ? '✏️ Edit Expense' : '✨ Add Expense';
+  var e = id ? DATA.expenses.find(function(x){return x.id===id;}) : null;
+  document.getElementById('f-name').value = e?e.name:'';
+  document.getElementById('f-sub').value = e?(e.sub||''):'';
+  document.getElementById('f-notes').value = e?(e.notes||''):'';
+  document.getElementById('f-total').value = e?(e.total||''):'';
+  document.getElementById('f-pay').value = e&&e.pays[0]?(e.pays[0].amt||''):'';
+  document.getElementById('f-cat').value = e?e.catId:DATA.categories[0].id;
+  document.getElementById('f-vend').value = e?(e.vendId||''):'';
+  document.getElementById('f-pdate').value = e&&e.pays[0]?e.pays[0].date:today();
+  document.getElementById('f-edate').value = e?(e.expDate||today()):today();
+  curPT.exp = e&&e.pays[0]?e.pays[0].type:'Advance';
+  curMem.exp = e&&e.pays[0]?e.pays[0].by:null;
+  document.querySelectorAll('#mo-exp .pt').forEach(function(b){b.classList.toggle('active',b.dataset.v===curPT.exp);});
+  document.querySelectorAll('#mo-exp .mb').forEach(function(b){
+    var m=b.dataset.m; b.className='mb'+(curMem.exp===m?' sel-'+m.toLowerCase():'');
+  });
+  openM('mo-exp');
+}
+
+function saveExp(){
+  var name = document.getElementById('f-name').value.trim();
+  var total = parseFloat(document.getElementById('f-total').value)||0;
+  var pay = parseFloat(document.getElementById('f-pay').value)||0;
+  if(!name){toast('⚠️ Enter expense name');return;}
+  if(!total&&!pay){toast('⚠️ Enter an amount');return;}
+  if(!curMem.exp){toast('⚠️ Select who paid');return;}
+  var p0 = {id:uid(),amt:pay||total,type:curPT.exp,date:document.getElementById('f-pdate').value||today(),by:curMem.exp,note:''};
+  if(editExpId){
+    var exp = DATA.expenses.find(function(x){return x.id===editExpId;});
+    if(exp){
+      exp.name=name; exp.catId=document.getElementById('f-cat').value;
+      exp.sub=document.getElementById('f-sub').value;
+      exp.vendId=document.getElementById('f-vend').value||null;
+      exp.total=total||pay; exp.expDate=document.getElementById('f-edate').value;
+      exp.notes=document.getElementById('f-notes').value;
+      if(exp.pays.length) Object.assign(exp.pays[0],p0);
+    }
+  } else {
+    DATA.expenses.push({id:uid(),name:name,catId:document.getElementById('f-cat').value,
+      sub:document.getElementById('f-sub').value,vendId:document.getElementById('f-vend').value||null,
+      total:total||pay,expDate:document.getElementById('f-edate').value,
+      notes:document.getElementById('f-notes').value,pays:[p0]});
+  }
+  closeM('mo-exp');
+  renderDash(); renderExpChips(); renderExpList();
+  saveToCloud('✅ Expense saved! All family can see it.');
+}
+
+function openAddPay(eid){
+  document.getElementById('pay-eid').value = eid;
+  document.getElementById('pay-amt').value = '';
+  document.getElementById('pay-date').value = today();
+  document.getElementById('pay-note').value = '';
+  curPT.pay='Advance'; curMem.pay=null;
+  document.querySelectorAll('#mo-pay .pt').forEach(function(b,i){b.classList.toggle('active',i===0);});
+  document.querySelectorAll('#mo-pay .mb').forEach(function(b){b.className='mb';});
+  openM('mo-pay');
+}
+function savePayment(){
+  var eid = document.getElementById('pay-eid').value;
+  var amt = parseFloat(document.getElementById('pay-amt').value)||0;
+  if(!amt){toast('⚠️ Enter amount');return;}
+  if(!curMem.pay){toast('⚠️ Select who paid');return;}
+  var e = DATA.expenses.find(function(x){return x.id===eid;});
+  if(e) e.pays.push({id:uid(),amt:amt,type:curPT.pay,date:document.getElementById('pay-date').value||today(),by:curMem.pay,note:document.getElementById('pay-note').value});
+  closeM('mo-pay');
+  showExpDetail(eid); renderDash();
+  saveToCloud('✅ Payment added!');
+}
+
+function openAddVendor(){
+  fillCatSel('v-cat');
+  ['v-name','v-phone','v-notes'].forEach(function(x){document.getElementById(x).value='';});
+  openM('mo-vend');
+}
+function saveVendor(){
+  var name = document.getElementById('v-name').value.trim();
+  if(!name){toast('⚠️ Enter vendor name');return;}
+  DATA.vendors.push({id:uid(),name:name,catId:document.getElementById('v-cat').value,phone:document.getElementById('v-phone').value.trim(),notes:document.getElementById('v-notes').value.trim()});
+  closeM('mo-vend'); renderVendors();
+  saveToCloud('✅ Vendor added!');
+}
+
+function openAddTask(){
+  ['t-title','t-desc','t-due'].forEach(function(x){document.getElementById(x).value='';});
+  openM('mo-task');
+}
+function saveTask(){
+  var title = document.getElementById('t-title').value.trim();
+  if(!title){toast('⚠️ Enter task title');return;}
+  DATA.tasks.push({id:uid(),title:title,desc:document.getElementById('t-desc').value.trim(),due:document.getElementById('t-due').value,done:false});
+  closeM('mo-task'); renderTasks(); renderDash();
+  saveToCloud('✅ Task added!');
+}
+
+function saveNewCat(){
+  var n = document.getElementById('nc-name').value.trim();
+  if(!n)return;
+  var id = n.toLowerCase().replace(/\s+/g,'_');
+  DATA.categories.push({id:id,name:n,e:document.getElementById('nc-emoji').value.trim()||'📦'});
+  closeM('mo-cat'); fillCatSel('f-cat');
+}
+
+// ── DASHBOARD ──
+var cC=null, mC=null;
+function renderDash(){
+  var total = DATA.expenses.reduce(function(s,e){return s+(e.total||0);},0);
+  var paid = DATA.expenses.reduce(function(s,e){return s+catPaid(e);},0);
+  var pending = total-paid;
+  var done = DATA.tasks.filter(function(t){return t.done;}).length;
+  document.getElementById('d-total').textContent = fmt(total);
+  document.getElementById('d-cnt').textContent = DATA.expenses.length+' items';
+  document.getElementById('d-paid').textContent = fmt(paid);
+  document.getElementById('d-due').textContent = fmt(pending)+' pending';
+  document.getElementById('d-cats').textContent = [].concat(DATA.expenses).map(function(e){return e.catId;}).filter(function(v,i,a){return a.indexOf(v)===i;}).length;
+  document.getElementById('d-tasks').textContent = done+'/'+DATA.tasks.length;
+  renderCatChart(); renderMemChart(); renderRecent(); renderUpcoming();
+}
+
+function renderCatChart(){
+  var byc={};
+  DATA.expenses.forEach(function(e){byc[e.catId]=(byc[e.catId]||0)+(e.total||0);});
+  var keys=Object.keys(byc), vals=Object.values(byc);
+  var cols=keys.map(function(_,i){return CAT_COLS[i%CAT_COLS.length];});
+  if(cC){cC.destroy(); cC=null;}
+  var el=document.getElementById('cChart');
+  if(!vals.length){
+    el.closest('.cp').querySelector('.chart-wrap').innerHTML='<div class="empty"><div class="empty-e">📊</div><div class="empty-t">No expenses yet</div></div>';
+    document.getElementById('cLeg').innerHTML=''; return;
+  }
+  cC=new Chart(el,{type:'doughnut',data:{labels:keys.map(function(k){return getCat(k).e+' '+getCat(k).name;}),datasets:[{data:vals,backgroundColor:cols,borderWidth:2,borderColor:'#fff',hoverOffset:5}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+fmt(c.parsed);}}}}}});
+  document.getElementById('cLeg').innerHTML=keys.map(function(k,i){return '<div class="li"><div class="ld" style="background:'+cols[i]+'"></div>'+getCat(k).e+' '+getCat(k).name+': <b>'+fmt(byc[k])+'</b></div>';}).join('');
+}
+
+function renderMemChart(){
+  var bm={Papa:0,Mummy:0,Didi:0,Shweta:0};
+  DATA.expenses.forEach(function(e){e.pays.forEach(function(p){if(p.by)bm[p.by]=(bm[p.by]||0)+p.amt;});});
+  var active=Object.entries(bm).filter(function(x){return x[1]>0;});
+  if(mC){mC.destroy(); mC=null;}
+  var el=document.getElementById('mChart');
+  if(!active.length){
+    el.closest('.cp').querySelector('.chart-wrap').innerHTML='<div class="empty"><div class="empty-e">👨‍👩‍👧‍👧</div><div class="empty-t">No payments yet</div></div>';
+    document.getElementById('mLeg').innerHTML=''; return;
+  }
+  mC=new Chart(el,{type:'doughnut',data:{labels:active.map(function(x){return x[0];}),datasets:[{data:active.map(function(x){return x[1];}),backgroundColor:active.map(function(x){return MEM_BG[x[0]];}),borderColor:active.map(function(x){return MEM_COL[x[0]];}),borderWidth:2,hoverOffset:5}]},options:{responsive:true,maintainAspectRatio:false,cutout:'54%',plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+fmt(c.parsed);}}}}}});
+  document.getElementById('mLeg').innerHTML=active.map(function(x){return '<div class="li"><div class="ld" style="background:'+MEM_COL[x[0]]+'"></div>'+x[0]+': <b>'+fmt(x[1])+'</b></div>';}).join('');
+}
+
+function renderRecent(){
+  var r=[].concat(DATA.expenses).sort(function(a,b){return (b.pays[0]?b.pays[0].date:'').localeCompare(a.pays[0]?a.pays[0].date:'');}).slice(0,5);
+  document.getElementById('d-recent').innerHTML=r.length?r.map(function(e){return eHTML(e,false);}).join(''):'<div class="empty"><div class="empty-e">🌸</div><div class="empty-t">No expenses yet</div></div>';
+}
+function renderUpcoming(){
+  var u=DATA.tasks.filter(function(t){return !t.done;}).sort(function(a,b){return (a.due||'9').localeCompare(b.due||'9');}).slice(0,4);
+  document.getElementById('d-upcoming').innerHTML=u.length?u.map(function(t){return tHTML(t,true);}).join(''):'<div class="empty"><div class="empty-e">✅</div><div class="empty-t">All tasks done!</div></div>';
+}
+
+// ── EXPENSES PAGE ──
+function renderExpChips(){
+  var cats=['All'].concat(DATA.expenses.map(function(e){return e.catId;}).filter(function(v,i,a){return a.indexOf(v)===i;}));
+  document.getElementById('expChips').innerHTML=cats.map(function(c){return '<button class="chip'+(expCatFilt===c?' active':'')+'" onclick="setEF(\''+c+'\',this)">'+(c==='All'?'All':getCat(c).e+' '+getCat(c).name)+'</button>';}).join('');
+}
+function setEF(v,btn){
+  expCatFilt=v;
+  document.querySelectorAll('#expChips .chip').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active'); renderExpList();
+}
+function renderExpList(){
+  var q=(document.getElementById('expQ').value||'').toLowerCase();
+  var list=[].concat(DATA.expenses).sort(function(a,b){return (b.pays[0]?b.pays[0].date:'').localeCompare(a.pays[0]?a.pays[0].date:'');});
+  if(expCatFilt!=='All') list=list.filter(function(e){return e.catId===expCatFilt;});
+  if(q) list=list.filter(function(e){return e.name.toLowerCase().includes(q)||(getVend(e.vendId)?getVend(e.vendId).name.toLowerCase().includes(q):false);});
+  var el=document.getElementById('expCards');
+  el.innerHTML=list.length?list.map(function(e){return eHTML(e,true);}).join(''):'<div class="empty"><div class="empty-e">🌸</div><div class="empty-t">No expenses found</div></div>';
+}
+
+function eHTML(e,clickable){
+  var cat=getCat(e.catId), vend=getVend(e.vendId);
+  var lp=e.pays[e.pays.length-1], who=lp?lp.by:'—', date=lp?lp.date:(e.expDate||'');
+  var bal=catBal(e), ci=DATA.categories.findIndex(function(c){return c.id===e.catId;});
+  return '<button class="ei" '+(clickable?'onclick="showExpDetail(\''+e.id+'\')"':'')+'>'+
+    '<div class="ei-icon" style="background:'+CAT_COLS[ci>=0?ci%CAT_COLS.length:0]+'22">'+cat.e+'</div>'+
+    '<div class="ei-body"><div class="ei-name">'+e.name+'</div>'+
+    '<div class="ei-meta">'+cat.name+(vend?' · '+vend.name:'')+(date?' · '+fmtDate(date):'')+'</div>'+
+    (e.sub?'<div class="ei-meta">'+e.sub+'</div>':'')+
+    '</div><div class="ei-right"><div class="ei-amt">'+fmt(e.total||catPaid(e))+'</div>'+
+    '<div><span class="wb w-'+who.toLowerCase()+'">'+who+'</span></div>'+
+    (bal>0?'<div style="font-size:9px;color:var(--rose);margin-top:2px">'+fmt(bal)+' due</div>':'')+
+    '</div></button>';
+}
+
+function showExpDetail(id){
+  var e=DATA.expenses.find(function(x){return x.id===id;}); if(!e)return;
+  var cat=getCat(e.catId), vend=getVend(e.vendId);
+  var paid=catPaid(e), total=e.total||paid, bal=catBal(e), pct=total>0?Math.min(100,paid/total*100):100;
+  var tl=e.pays.map(function(p){return '<div class="tli"><div class="tl-d">'+fmtDate(p.date)+'</div><div class="tl-t">'+p.type+' — '+fmt(p.amt)+'</div><div class="tl-s">Paid by <span class="wb w-'+(p.by||'').toLowerCase()+'">'+(p.by||'—')+'</span>'+(p.note?' · '+p.note:'')+'</div></div>';}).join('');
+  document.getElementById('exp-detail').innerHTML=
+    '<button class="back" onclick="backExpList()">← Back</button>'+
+    '<div class="dh"><div style="font-size:1.8rem">'+cat.e+'</div><div class="dh-name">'+e.name+'</div><div class="dh-amt">'+fmt(total)+'</div>'+
+    '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--rose-dark);margin-top:8px"><span>Paid: '+fmt(paid)+'</span><span>Due: '+fmt(bal)+'</span></div>'+
+    '<div class="bb"><div class="bf" style="width:'+Math.round(pct)+'%"></div></div></div>'+
+    '<div class="card cp"><div class="sec">📄 Details</div>'+
+    '<div class="rd"><span class="rd-k">Category</span><span class="rd-v">'+cat.e+' '+cat.name+'</span></div>'+
+    (e.sub?'<div class="rd"><span class="rd-k">Subcategory</span><span class="rd-v">'+e.sub+'</span></div>':'')+
+    (vend?'<div class="rd"><span class="rd-k">Vendor</span><span class="rd-v">'+vend.name+(vend.phone?' · 📞'+vend.phone:'')+'</span></div>':'')+
+    (e.expDate?'<div class="rd"><span class="rd-k">Date</span><span class="rd-v">'+fmtDate(e.expDate)+'</span></div>':'')+
+    (e.notes?'<div class="rd"><span class="rd-k">Notes</span><span class="rd-v">'+e.notes+'</span></div>':'')+
+    '</div><div class="card cp"><div class="sec">💳 Payment Timeline</div><div class="tl">'+(tl||'<div class="empty"><div class="empty-t">No payments</div></div>')+'</div>'+
+    '<button class="btn btn-o bsm" style="margin-top:12px" onclick="openAddPay(\''+e.id+'\')">➕ Add Payment</button></div>'+
+    '<div style="display:flex;gap:8px;margin-top:4px">'+
+    '<button class="btn btn-o bsm" style="flex:1" onclick="openAddExp(\''+e.id+'\')">✏️ Edit</button>'+
+    '<button class="btn btn-d bsm" style="flex:1" onclick="delExp(\''+e.id+'\')">🗑️ Delete</button></div>';
+  document.getElementById('exp-detail').style.display='block';
+  document.getElementById('exp-list').style.display='none';
+  document.getElementById('pg-exp').scrollTop=0;
+}
+function backExpList(){document.getElementById('exp-detail').style.display='none';document.getElementById('exp-list').style.display='block';}
+function delExp(id){
+  if(!confirm('Delete this expense?'))return;
+  DATA.expenses=DATA.expenses.filter(function(e){return e.id!==id;});
+  backExpList(); renderExpChips(); renderExpList(); renderDash();
+  saveToCloud('🗑️ Expense deleted');
+}
+
+// ── VENDORS ──
+function renderVendors(){
+  var el=document.getElementById('vendCards');
+  if(!DATA.vendors.length){el.innerHTML='<div class="empty"><div class="empty-e">🏪</div><div class="empty-t">No vendors yet</div></div>';return;}
+  el.innerHTML=DATA.vendors.map(function(v){
+    var exps=DATA.expenses.filter(function(e){return e.vendId===v.id;}), tp=exps.reduce(function(s,e){return s+catPaid(e);},0);
+    var cat=getCat(v.catId), ci=DATA.categories.findIndex(function(c){return c.id===v.catId;});
+    return '<button class="vc" onclick="showVendDetail(\''+v.id+'\')">'+
+      '<div style="display:flex;align-items:center;gap:10px">'+
+      '<div style="width:38px;height:38px;border-radius:11px;background:'+CAT_COLS[ci>=0?ci%CAT_COLS.length:0]+'33;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+cat.e+'</div>'+
+      '<div><div class="vn">'+v.name+'</div><div class="vcat">'+cat.name+(v.phone?' · 📞'+v.phone:'')+'</div></div></div>'+
+      '<div class="vstats"><div><div class="vs-val">'+exps.length+'</div><div class="vs-lbl">Expenses</div></div>'+
+      '<div><div class="vs-val">'+fmt(tp)+'</div><div class="vs-lbl">Total Paid</div></div></div></button>';
+  }).join('');
+}
+function showVendDetail(id){
+  var v=DATA.vendors.find(function(x){return x.id===id;}); if(!v)return;
+  var cat=getCat(v.catId), exps=DATA.expenses.filter(function(e){return e.vendId===id;});
+  var tp=exps.reduce(function(s,e){return s+catPaid(e);},0);
+  var ta=exps.reduce(function(s,e){return s+(e.total||0);},0);
+  var bal=exps.reduce(function(s,e){return s+catBal(e);},0);
+  document.getElementById('vend-detail').innerHTML=
+    '<button class="back" onclick="backVendList()">← Back</button>'+
+    '<div class="dh" style="text-align:center"><div style="font-size:1.8rem">'+cat.e+'</div><div class="dh-name">'+v.name+'</div><div style="font-size:12px;color:var(--text2);margin-top:4px">'+cat.name+(v.phone?' · 📞'+v.phone:'')+'</div></div>'+
+    '<div class="sgrid" style="margin-bottom:12px">'+
+    '<div class="sc p"><div class="sc-lbl">Total</div><div class="sc-val">'+fmt(ta)+'</div></div>'+
+    '<div class="sc gr"><div class="sc-lbl">Paid</div><div class="sc-val">'+fmt(tp)+'</div></div>'+
+    '<div class="sc o"><div class="sc-lbl">Balance</div><div class="sc-val">'+fmt(bal)+'</div></div>'+
+    '<div class="sc g"><div class="sc-lbl">Expenses</div><div class="sc-val">'+exps.length+'</div></div></div>'+
+    (v.notes?'<div class="card cp" style="margin-bottom:12px"><div class="sec">📝 Notes</div><div style="font-size:13px;color:var(--text2)">'+v.notes+'</div></div>':'')+
+    '<div class="card">'+(exps.length?exps.map(function(e){return eHTML(e,false);}).join(''):'<div class="empty"><div class="empty-t">No linked expenses</div></div>')+'</div>'+
+    '<button class="btn btn-d bsm" style="margin-top:8px" onclick="delVend(\''+v.id+'\')">🗑️ Delete Vendor</button>';
+  document.getElementById('vend-detail').style.display='block';
+  document.getElementById('vend-list').style.display='none';
+  document.getElementById('pg-vend').scrollTop=0;
+}
+function backVendList(){document.getElementById('vend-detail').style.display='none';document.getElementById('vend-list').style.display='block';}
+function delVend(id){
+  if(!confirm('Delete vendor?'))return;
+  DATA.vendors=DATA.vendors.filter(function(v){return v.id!==id;});
+  DATA.expenses.forEach(function(e){if(e.vendId===id)e.vendId=null;});
+  backVendList(); renderVendors();
+  saveToCloud('🗑️ Vendor deleted');
+}
+
+// ── TASKS ──
+function setTF(f,btn){
+  tfilt=f;
+  document.querySelectorAll('#pg-tasks .chip').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active'); renderTasks();
+}
+function renderTasks(){
+  var list=[].concat(DATA.tasks);
+  if(tfilt==='pending') list=list.filter(function(t){return !t.done;});
+  if(tfilt==='done') list=list.filter(function(t){return t.done;});
+  list.sort(function(a,b){return (a.due||'9').localeCompare(b.due||'9');});
+  var el=document.getElementById('taskCards');
+  el.innerHTML=list.length?list.map(function(t){return tHTML(t,false);}).join(''):'<div class="empty"><div class="empty-e">📋</div><div class="empty-t">'+(tfilt==='done'?'No tasks done yet':'All tasks complete! 🎉')+'</div></div>';
+}
+function tHTML(t,compact){
+  var ov=t.due&&t.due<today()&&!t.done;
+  return '<button class="ti" onclick="toggleTask(\''+t.id+'\')">'+
+    '<div class="tck'+(t.done?' done':'')+'">'+(t.done?'✓':'')+'</div>'+
+    '<div class="tb2"><div class="tt'+(t.done?' done':'')+'">'+t.title+'</div>'+
+    (t.desc&&!compact?'<div class="tdesc">'+t.desc+'</div>':'')+
+    (t.due?'<div class="tdue'+(ov?' ov':'')+'">📅 '+fmtDate(t.due)+(ov?' · Overdue':'')+'</div>':'')+
+    '</div>'+
+    (!compact?'<button onclick="event.stopPropagation();delTask(\''+t.id+'\')" style="background:none;border:none;font-size:15px;color:var(--text3);cursor:pointer;padding:4px;flex-shrink:0">🗑️</button>':'')+
+    '</button>';
+}
+function toggleTask(id){
+  var t=DATA.tasks.find(function(x){return x.id===id;}); if(!t)return;
+  t.done=!t.done; renderTasks(); renderDash();
+  saveToCloud(t.done?'✅ Task done!':'📋 Marked pending');
+}
+function delTask(id){
+  if(!confirm('Delete task?'))return;
+  DATA.tasks=DATA.tasks.filter(function(t){return t.id!==id;});
+  renderTasks(); renderDash();
+  saveToCloud('🗑️ Task deleted');
+}
+
+// ── BOOT — load from cloud and show app directly ──
+launchApp();
+
+function launchApp(){
+  document.getElementById('loading').style.display='flex';
+  document.getElementById('loadMsg').textContent='Connecting to cloud…';
+  loadFromCloud(function(){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('app').style.display='flex';
+    renderDash();renderExpChips();renderExpList();renderVendors();renderTasks();
+  });
+}
+</script>
+</body>
+</html>
